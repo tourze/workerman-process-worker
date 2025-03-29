@@ -32,6 +32,10 @@ class ProcessWorker extends Worker
                 // 关闭连接和进程
                 fclose($pipe);
                 Worker::$globalEvent->offReadable($pipe);
+
+                // 如果进程都退出了，那我们Worker也要退出
+                $this->stop();
+
                 $this->onProcessExit && call_user_func_array($this->onProcessExit, [$this]);
             } else {
                 // 输出发送给客户端
