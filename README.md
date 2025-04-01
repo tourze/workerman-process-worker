@@ -6,6 +6,8 @@
 
 A Workerman extension that allows you to run and monitor external processes within the Workerman environment.
 
+Inspired by https://github.com/workbunny
+
 ## Features
 
 - Run any external command as a Workerman process

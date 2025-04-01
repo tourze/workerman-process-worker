@@ -8,6 +8,8 @@
 
 一个 Workerman 扩展，允许您在 Workerman 环境中运行和监控外部进程。
 
+灵感来自 https://github.com/workbunny
+
 ## 功能特性
 
 - 将任何外部命令作为 Workerman 进程运行
