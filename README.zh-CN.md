@@ -61,24 +61,74 @@ Worker::runAll();
 $processWorker = new ProcessWorker('your_command_here');
 ```
 
-### 事件回调
+### 事件处理
 
-ProcessWorker 提供了两个主要回调：
+ProcessWorker 提供了两种方式处理事件：
 
-1. `onProcessOutput`：当进程输出数据时调用
+#### 1. 传统回调方式
 
 ```php
-   $processWorker->onProcessOutput = function ($output) {
-       // 处理输出
-   };
+// 处理进程启动
+$processWorker->onProcessStart = function ($worker) {
+    echo "进程已启动\n";
+};
+
+// 处理进程输出
+$processWorker->onProcessOutput = function ($worker, $output) {
+    echo "进程输出: $output";
+};
+
+// 处理进程退出
+$processWorker->onProcessExit = function ($worker) {
+    echo "进程已退出\n";
+};
 ```
 
-2. `onProcessExit`：当进程终止时调用
+#### 2. 事件监听器方式 (推荐)
+
+ProcessWorker 使用 Symfony EventDispatcher 组件进行事件管理，可以添加多个监听器，更加灵活。
 
 ```php
-   $processWorker->onProcessExit = function () {
-       // 处理进程退出
-   };
+use Tourze\Workerman\ProcessWorker\Event\ProcessStartEvent;
+use Tourze\Workerman\ProcessWorker\Event\ProcessOutputEvent;
+use Tourze\Workerman\ProcessWorker\Event\ProcessExitEvent;
+
+// 处理进程启动事件
+$processWorker->addListener(ProcessStartEvent::NAME, function (ProcessStartEvent $event) {
+    $worker = $event->getWorker();
+    echo "进程已启动: " . $worker->getRunCommand() . "\n";
+});
+
+// 处理进程输出事件
+$processWorker->addListener(ProcessOutputEvent::NAME, function (ProcessOutputEvent $event) {
+    $output = $event->getOutput();
+    echo "进程输出: $output";
+});
+
+// 处理进程退出事件
+$processWorker->addListener(ProcessExitEvent::NAME, function (ProcessExitEvent $event) {
+    $worker = $event->getWorker();
+    echo "进程已退出: " . $worker->getRunCommand() . "\n";
+});
+
+// 可以添加多个具有不同优先级的监听器
+$processWorker->addListener(ProcessOutputEvent::NAME, function (ProcessOutputEvent $event) {
+    // 将输出保存到日志
+    file_put_contents('output.log', $event->getOutput(), FILE_APPEND);
+}, -10); // 低优先级，在主要监听器之后执行
+```
+
+### 自定义事件调度器
+
+你可以使用自定义的事件调度器：
+
+```php
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
+$eventDispatcher = new EventDispatcher();
+// 配置事件调度器...
+
+$processWorker = new ProcessWorker('your_command', null, $eventDispatcher);
 ```
 
 ### Worker 配置
