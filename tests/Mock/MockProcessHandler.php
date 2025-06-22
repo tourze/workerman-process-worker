@@ -46,7 +46,7 @@ class MockProcessHandler implements ProcessHandlerInterface
     
     /**
      * 启动进程
-     * 
+     *
      * @return resource 返回进程资源
      */
     public function start(): mixed
@@ -57,7 +57,7 @@ class MockProcessHandler implements ProcessHandlerInterface
     
     /**
      * 停止进程
-     * 
+     *
      * @param resource $process 进程资源
      * @return void
      */
@@ -68,7 +68,7 @@ class MockProcessHandler implements ProcessHandlerInterface
     
     /**
      * 检查进程是否在运行
-     * 
+     *
      * @param resource $process 进程资源
      * @return bool
      */
@@ -79,7 +79,7 @@ class MockProcessHandler implements ProcessHandlerInterface
     
     /**
      * 获取运行的命令
-     * 
+     *
      * @return string
      */
     public function getCommand(): string
@@ -97,7 +97,7 @@ class MockProcessHandler implements ProcessHandlerInterface
     
     /**
      * 获取模拟资源
-     * 
+     *
      * @return resource
      */
     public function getMockResource(): mixed

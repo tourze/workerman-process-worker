@@ -44,7 +44,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 添加可读事件
-     * 
+     *
      * @param resource $stream 流资源
      * @param callable $func 回调函数
      * @return void
@@ -57,7 +57,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 移除可读事件
-     * 
+     *
      * @param resource $stream 流资源
      * @return bool
      */
@@ -73,7 +73,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 添加可写事件
-     * 
+     *
      * @param resource $stream 流资源
      * @param callable $func 回调函数
      * @return void
@@ -86,7 +86,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 移除可写事件
-     * 
+     *
      * @param resource $stream 流资源
      * @return bool
      */
@@ -102,7 +102,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 添加信号事件
-     * 
+     *
      * @param int $signal 信号
      * @param callable $func 回调函数
      * @return void
@@ -114,7 +114,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 移除信号事件
-     * 
+     *
      * @param int $signal 信号
      * @return bool
      */
@@ -129,7 +129,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 延迟执行回调
-     * 
+     *
      * @param float $delay 延迟时间
      * @param callable $func 回调函数
      * @param array $args 参数
@@ -149,7 +149,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 取消延迟定时器
-     * 
+     *
      * @param int $timerId 定时器ID
      * @return bool
      */
@@ -164,7 +164,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 重复执行回调
-     * 
+     *
      * @param float $interval 时间间隔
      * @param callable $func 回调函数
      * @param array $args 参数
@@ -184,7 +184,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 取消重复定时器
-     * 
+     *
      * @param int $timerId 定时器ID
      * @return bool
      */
@@ -199,7 +199,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 停止所有定时器
-     * 
+     *
      * @return void
      */
     public function stop(): void
@@ -209,7 +209,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 删除所有定时器
-     * 
+     *
      * @return void
      */
     public function deleteAllTimer(): void
@@ -219,7 +219,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 运行事件循环
-     * 
+     *
      * @return void
      */
     public function run(): void
@@ -229,7 +229,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 获取定时器数量
-     * 
+     *
      * @return int
      */
     public function getTimerCount(): int
@@ -239,7 +239,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 设置错误处理器
-     * 
+     *
      * @param callable $errorHandler 错误处理器
      * @return void
      */
@@ -250,7 +250,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 获取流的唯一键
-     * 
+     *
      * @param resource $stream 流资源
      * @return string
      */
@@ -265,7 +265,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 模拟触发可读事件
-     * 
+     *
      * @param resource $stream 流资源
      * @return bool 是否成功触发
      */
@@ -283,7 +283,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 模拟触发可写事件
-     * 
+     *
      * @param resource $stream 流资源
      * @return bool 是否成功触发
      */
@@ -301,7 +301,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 模拟触发信号事件
-     * 
+     *
      * @param int $signal 信号
      * @return bool 是否成功触发
      */
@@ -317,7 +317,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 模拟触发定时器
-     * 
+     *
      * @param int $timerId 定时器ID
      * @return bool 是否成功触发
      */
@@ -339,7 +339,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 获取所有注册的可读事件回调
-     * 
+     *
      * @return array<string, callable>
      */
     public function getReadCallbacks(): array
@@ -349,7 +349,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 获取所有注册的可写事件回调
-     * 
+     *
      * @return array<string, callable>
      */
     public function getWriteCallbacks(): array
@@ -359,7 +359,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 获取所有注册的信号事件回调
-     * 
+     *
      * @return array<int, callable>
      */
     public function getSignalCallbacks(): array
@@ -369,7 +369,7 @@ class MockEventLoop implements EventInterface
     
     /**
      * 获取所有定时器
-     * 
+     *
      * @return array<int, array>
      */
     public function getTimers(): array
