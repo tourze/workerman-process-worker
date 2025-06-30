@@ -256,11 +256,7 @@ class MockEventLoop implements EventInterface
      */
     private function getStreamKey($stream): string
     {
-        if (is_resource($stream)) {
-            return (string) $stream;
-        }
-        
-        return spl_object_hash($stream);
+        return (string) $stream;
     }
     
     /**
