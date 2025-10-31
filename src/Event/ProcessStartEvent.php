@@ -24,8 +24,6 @@ class ProcessStartEvent extends Event
 
     /**
      * 获取进程工作器
-     *
-     * @return ProcessWorker
      */
     public function getWorker(): ProcessWorker
     {

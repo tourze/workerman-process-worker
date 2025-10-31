@@ -18,7 +18,6 @@ interface ProcessHandlerInterface
      * 停止进程
      *
      * @param resource $process 进程资源
-     * @return void
      */
     public function stop(mixed $process): void;
 
@@ -26,14 +25,11 @@ interface ProcessHandlerInterface
      * 检查进程是否在运行
      *
      * @param resource $process 进程资源
-     * @return bool
      */
     public function isRunning(mixed $process): bool;
 
     /**
      * 获取运行的命令
-     *
-     * @return string
      */
     public function getCommand(): string;
 }

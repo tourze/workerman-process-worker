@@ -39,16 +39,15 @@ class ProcessWorker extends Worker
     private EventDispatcherInterface $eventDispatcher;
 
     /**
-     * @param string $runCommand 要运行的命令
-     * @param ProcessHandlerInterface|null $processHandler 进程处理器
+     * @param string                        $runCommand      要运行的命令
+     * @param ProcessHandlerInterface|null  $processHandler  进程处理器
      * @param EventDispatcherInterface|null $eventDispatcher 事件调度器
      */
     public function __construct(
         private readonly string $runCommand,
         private readonly ?ProcessHandlerInterface $processHandler = null,
-        ?EventDispatcherInterface $eventDispatcher = null
-    )
-    {
+        ?EventDispatcherInterface $eventDispatcher = null,
+    ) {
         parent::__construct();
         $this->reloadable = true;
         $this->count = 1;
@@ -65,20 +64,20 @@ class ProcessWorker extends Worker
     private function registerDefaultListeners(): void
     {
         // 在构造时注册监听器，以兼容原有的回调方式
-        $this->eventDispatcher->addListener(ProcessStartEvent::NAME, function (ProcessStartEvent $event) {
-            if ($this->onProcessStart !== null) {
+        $this->eventDispatcher->addListener(ProcessStartEvent::class, function (ProcessStartEvent $event): void {
+            if (null !== $this->onProcessStart) {
                 call_user_func($this->onProcessStart, $this);
             }
         });
 
-        $this->eventDispatcher->addListener(ProcessOutputEvent::NAME, function (ProcessOutputEvent $event) {
-            if ($this->onProcessOutput !== null) {
+        $this->eventDispatcher->addListener(ProcessOutputEvent::class, function (ProcessOutputEvent $event): void {
+            if (null !== $this->onProcessOutput) {
                 call_user_func($this->onProcessOutput, $this, $event->getOutput());
             }
         });
 
-        $this->eventDispatcher->addListener(ProcessExitEvent::NAME, function (ProcessExitEvent $event) {
-            if ($this->onProcessExit !== null) {
+        $this->eventDispatcher->addListener(ProcessExitEvent::class, function (ProcessExitEvent $event): void {
+            if (null !== $this->onProcessExit) {
                 call_user_func($this->onProcessExit, $this);
             }
         });
@@ -86,8 +85,6 @@ class ProcessWorker extends Worker
 
     /**
      * 获取进程处理器
-     *
-     * @return ProcessHandlerInterface
      */
     public function getProcessHandler(): ProcessHandlerInterface
     {
@@ -96,8 +93,6 @@ class ProcessWorker extends Worker
 
     /**
      * 获取事件调度器
-     *
-     * @return EventDispatcherInterface
      */
     public function getEventDispatcher(): EventDispatcherInterface
     {
@@ -106,8 +101,6 @@ class ProcessWorker extends Worker
 
     /**
      * Worker启动时的回调
-     *
-     * @return void
      */
     private function onWorkerStart(): void
     {
@@ -115,20 +108,20 @@ class ProcessWorker extends Worker
         $eventLoop = Worker::getEventLoop();
 
         // 分发进程启动事件
-        $this->eventDispatcher->dispatch(new ProcessStartEvent($this), ProcessStartEvent::NAME);
+        $this->eventDispatcher->dispatch(new ProcessStartEvent($this));
 
         // 启动进程
         $this->processResource = $processHandler->start();
 
         // 创建读事件
-        $eventLoop->onReadable($this->processResource, function ($pipe) use ($processHandler) {
+        $eventLoop->onReadable($this->processResource, function ($pipe) use ($processHandler): void {
             // 获取事件循环
             $eventLoop = Worker::getEventLoop();
 
             // 读取进程输出
             $output = fread($pipe, 8192);
 
-            if ($output === false || !$processHandler->isRunning($pipe)) {
+            if (false === $output || !$processHandler->isRunning($pipe)) {
                 // 关闭连接和进程
                 $processHandler->stop($pipe);
                 $eventLoop->offReadable($pipe);
@@ -137,10 +130,10 @@ class ProcessWorker extends Worker
                 $this->stop();
 
                 // 分发进程退出事件
-                $this->eventDispatcher->dispatch(new ProcessExitEvent($this), ProcessExitEvent::NAME);
+                $this->eventDispatcher->dispatch(new ProcessExitEvent($this));
             } else {
                 // 分发进程输出事件
-                $this->eventDispatcher->dispatch(new ProcessOutputEvent($this, $output), ProcessOutputEvent::NAME);
+                $this->eventDispatcher->dispatch(new ProcessOutputEvent($this, $output));
             }
         });
     }
@@ -148,10 +141,9 @@ class ProcessWorker extends Worker
     /**
      * 添加事件监听器
      *
-     * @param string $eventName 事件名称
-     * @param callable $listener 监听器
-     * @param int $priority 优先级
-     * @return void
+     * @param string   $eventName 事件名称
+     * @param callable $listener  监听器
+     * @param int      $priority  优先级
      */
     public function addListener(string $eventName, callable $listener, int $priority = 0): void
     {
@@ -160,8 +152,6 @@ class ProcessWorker extends Worker
 
     /**
      * 获取运行的命令
-     *
-     * @return string
      */
     public function getRunCommand(): string
     {

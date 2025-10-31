@@ -3,29 +3,35 @@
 namespace Tourze\Workerman\ProcessWorker\Handler;
 
 use Tourze\Workerman\ProcessWorker\Contract\ProcessHandlerInterface;
+use Tourze\Workerman\ProcessWorker\Exception\ProcessException;
 
 /**
  * 默认进程处理器实现
  */
-class DefaultProcessHandler implements ProcessHandlerInterface
+readonly class DefaultProcessHandler implements ProcessHandlerInterface
 {
     /**
      * @param string $command 要执行的命令
      */
-    public function __construct(private readonly string $command)
+    public function __construct(private string $command)
     {
     }
 
     public function start(): mixed
     {
         // 使用popen打开一个进程
-        return popen($this->command, 'r');
+        $resource = popen($this->command, 'r');
+        if (false === $resource) {
+            throw new ProcessException('Failed to start process: ' . $this->command);
+        }
+
+        return $resource;
     }
 
     public function stop(mixed $process): void
     {
         if (is_resource($process)) {
-            fclose($process);
+            pclose($process);
         }
     }
 

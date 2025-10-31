@@ -1,18 +1,27 @@
 <?php
 
-namespace Tourze\Workerman\ProcessWorker\Tests\Unit\Event;
+namespace Tourze\Workerman\ProcessWorker\Tests\Event;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Tourze\PHPUnitSymfonyUnitTest\AbstractEventTestCase;
+use Tourze\Workerman\ProcessWorker\Contract\ProcessHandlerInterface;
 use Tourze\Workerman\ProcessWorker\Event\ProcessExitEvent;
 use Tourze\Workerman\ProcessWorker\ProcessWorker;
 
-class ProcessExitEventTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(ProcessExitEvent::class)]
+final class ProcessExitEventTest extends AbstractEventTestCase
 {
     private ProcessWorker $worker;
 
     protected function setUp(): void
     {
-        $this->worker = $this->createMock(ProcessWorker::class);
+        parent::setUp();
+
+        $processHandler = $this->createMock(ProcessHandlerInterface::class);
+        $this->worker = new ProcessWorker('test', $processHandler);
     }
 
     public function testConstruction(): void

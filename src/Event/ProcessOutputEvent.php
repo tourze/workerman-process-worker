@@ -17,19 +17,16 @@ class ProcessOutputEvent extends Event
 
     /**
      * @param ProcessWorker $worker 进程工作器
-     * @param string $output 输出内容
+     * @param string        $output 输出内容
      */
     public function __construct(
         private readonly ProcessWorker $worker,
         private readonly string $output,
-    )
-    {
+    ) {
     }
 
     /**
      * 获取进程工作器
-     *
-     * @return ProcessWorker
      */
     public function getWorker(): ProcessWorker
     {
@@ -38,8 +35,6 @@ class ProcessOutputEvent extends Event
 
     /**
      * 获取输出内容
-     *
-     * @return string
      */
     public function getOutput(): string
     {
